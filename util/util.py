@@ -18,13 +18,18 @@ def plot(
                 "".join("0" if r == Result.Zero else "1" for r in shot)
                 for shot in results
             ]
+        elif basis.upper() == "Z'":
+            bitstrings = [
+                "".join("↑" if r == Result.Zero else "↓" for r in shot)
+                for shot in results
+            ]
         elif basis.upper() == "X":
             bitstrings = [
                 "".join("+" if r == Result.Zero else "-" for r in shot)
                 for shot in results
             ]
         else:
-            raise ValueError(f"Unsupported basis: {basis}. Use 'Z' or 'X'.")
+            raise ValueError(f"Unsupported basis: {basis}. Use 'Z', 'Z'' or 'X'.")
         
         counts = Counter(bitstrings)
         
@@ -53,6 +58,19 @@ def plot(
             else:
                 display_outcomes = ["|0⟩", "|1⟩"]
                 freqs = [counts["0"], counts["1"]]
+        elif basis.upper() == "Z'":
+            labels = ["↑" if r == Result.Zero else "↓" for r in results]
+            counts = Counter(labels)
+            for key in ("↑", "↓"):
+                counts.setdefault(key, 0)
+                
+            if hide_empty:
+                keys = [k for k in ("↑", "↓") if counts[k] > 0]
+                display_outcomes = [f"|{k}⟩" for k in keys]
+                freqs = [counts[k] for k in keys]
+            else:
+                display_outcomes = ["|↑⟩", "|↓⟩"]
+                freqs = [counts["↑"], counts["↓"]]
         elif basis.upper() == "X":
             labels = ["+" if r == Result.Zero else "-" for r in results]
             counts = Counter(labels)
@@ -67,7 +85,7 @@ def plot(
                 display_outcomes = ["|+⟩", "|-⟩"]
                 freqs = [counts["+"], counts["-"]]
         else:
-            raise ValueError(f"Unsupported basis: {basis}. Use 'Z' or 'X'.")
+            raise ValueError(f"Unsupported basis: {basis}. Use 'Z', 'Z'' or 'X'.")
 
     fig = go.Figure(
         data=go.Bar(
