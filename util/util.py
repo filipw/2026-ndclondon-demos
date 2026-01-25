@@ -33,7 +33,15 @@ def plot(
         
         counts = Counter(bitstrings)
         
-        symbols = "01" if basis.upper() == "Z" else "+-"
+        if basis.upper() == "Z'":
+            symbols = "↑↓"
+        elif basis.upper() == "X":
+            symbols = "+-"
+        elif basis.upper() == "Z":
+            symbols = "01"
+        else:
+            raise ValueError(f"Unsupported basis: {basis}. Use 'Z', 'Z'' or 'X'.")
+        
         all_strs = ["".join(p) for p in product(symbols, repeat=n_qubits)]
         
         for bs in all_strs:
