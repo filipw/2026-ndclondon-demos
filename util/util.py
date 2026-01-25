@@ -99,13 +99,23 @@ def plot(
         data=go.Bar(
             x=display_outcomes,
             y=freqs,
-            text=freqs
+            text=freqs,
+            textfont=dict(size=30),
+            textposition="auto"
         ),
         layout=go.Layout(
-            title=title,
+            title=dict(
+                text=title,
+                font=dict(size=24)
+            ),
             xaxis=dict(
                 tickfont=dict(
-                    size=16
+                    size=24
+                )
+            ),
+            yaxis=dict(
+                tickfont=dict(
+                    size=20
                 )
             )
         )
